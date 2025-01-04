@@ -1,0 +1,108 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
+        <title>LegoPilot</title>
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Your page content -->
+        {% block content %}
+        <div class="row">
+            <div id="R-gear" class="col-4 border"><p>R</p></div>
+            <div id="P-gear" class="col-4 border"><p>P</p></div>
+            <div id="D-gear" class="col-4 border"><p>D</p></div>
+        </div>
+        <div class="row">
+            <div id="steering-left" class="col-1 border"></div>
+            <div id="steering" class="col-2 border">
+                <img src="{{ url_for('static', filename='steering-wheel.png') }}" style="-webkit-touch-callout: none;" class="img-fluid">
+            </div>
+            <div id="steering-right" class="col-1 border"></div>
+
+            <div class="col-4 border"><p>Stream by camera</p></div>
+
+            <div id="brake" class="col-2 border">
+                <img src="{{ url_for('static', filename='brake.png') }}" style="-webkit-touch-callout: none;" class="img-fluid">
+            </div>
+
+            <div id="accelerator" class="col-2 border">
+                <img src="{{ url_for('static', filename='accelerator.png') }}" style="-webkit-touch-callout: none;" class="img-fluid">
+            </div>
+        </div>
+        {% endblock %}
+
+        {% block scripts %}
+            <!-- Optional JavaScript -->
+            {{ bootstrap.load_js() }}
+
+            <script>
+            document.getElementById("P-gear").addEventListener("touchstart", gear_p);
+            document.getElementById("R-gear").addEventListener("touchstart", gear_r);
+            document.getElementById("D-gear").addEventListener("touchstart", gear_d);
+            
+            document.getElementById("steering-left").addEventListener("touchstart", steering_left);
+            document.getElementById("steering").addEventListener("touchstart", steering_middle);
+            document.getElementById("steering-right").addEventListener("touchstart", steering_right);
+
+            document.getElementById("accelerator").addEventListener("touchstart", accelerator);
+            document.getElementById("brake").addEventListener("touchstart", brake);
+            
+            function gear_p(){
+                fetch("/change-gear?" + new URLSearchParams({
+                    gear: 0
+                }));
+            }
+
+            function gear_r(){
+                fetch("/change-gear?" + new URLSearchParams({
+                    gear: 1
+                }));
+            }
+
+            function gear_d(){
+                fetch("/change-gear?" + new URLSearchParams({
+                    gear: 2
+                }));
+            }
+
+            function steering_left(){
+                fetch("/steering?" + new URLSearchParams({
+                    angle: -60
+                }));
+            }
+
+            function steering_middle(){
+                fetch("/steering?" + new URLSearchParams({
+                    angle: 0
+                }));
+            }
+
+            function steering_right(){
+                fetch("/steering?" + new URLSearchParams({
+                    angle: 60
+                }));
+            }
+
+            function brake(){
+                fetch("/brake");
+            }
+
+            function accelerator(){
+                fetch("/accelerator");
+            }
+
+        </script>
+        {% endblock %}
+    </body>
+</html>
