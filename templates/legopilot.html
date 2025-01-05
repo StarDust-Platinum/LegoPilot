@@ -19,9 +19,9 @@
         <!-- Your page content -->
         {% block content %}
         <div class="row">
-            <div id="R-gear" class="col-4 border"><p>R</p></div>
-            <div id="P-gear" class="col-4 border"><p>P</p></div>
-            <div id="D-gear" class="col-4 border"><p>D</p></div>
+            <div id="R-gear" class="col-4 border"><p class="text-center">R</p></div>
+            <div id="P-gear" class="col-4 border"><p class="text-center">P</p></div>
+            <div id="D-gear" class="col-4 border"><p class="text-center">D</p></div>
         </div>
         <div class="row">
             <div id="steering-left" class="col-1 border"></div>
@@ -30,7 +30,7 @@
             </div>
             <div id="steering-right" class="col-1 border"></div>
 
-            <div class="col-4 border"><p>Stream by camera</p></div>
+            <div class="col-4 border"><img src="{{ url_for('video_feed') }}" class="img-fluid"></div>
 
             <div id="brake" class="col-2 border">
                 <img src="{{ url_for('static', filename='brake.png') }}" style="-webkit-touch-callout: none;" class="img-fluid">

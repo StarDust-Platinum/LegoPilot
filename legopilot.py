@@ -11,6 +11,7 @@ gear = GEAR_POSITION_P
 # Motor Initialization
 steer_motor = Motor('A')
 drive_motor = Motor('B')
+steer_motor.run_to_position(0)
 
 
 
@@ -24,7 +25,7 @@ camera.start()
 def generate_frames():
     while True:
         frame = camera.capture_array()
-        ret, buffer = cv2.imencode('.jpg', frame)
+        ret, buffer = cv2.imencode('.jpg', cv2.rotate(frame, cv2.ROTATE_180))
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -77,6 +78,10 @@ def brake():
     drive_motor.stop()
     return redirect(url_for("index"))
 
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__=="__main__":
